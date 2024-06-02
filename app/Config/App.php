@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://buildmax.lammy.life/';
+    public string $baseURL = 'http://localhost/buildmax/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

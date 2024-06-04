@@ -18,6 +18,8 @@
     <link rel="manifest" href="<?php echo base_url('assets/');?>assets/img/favicons/manifest.json">
     <meta name="msapplication-TileImage" content="<?php echo base_url('assets/');?>assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
+    <meta name="google-signin-client_id" content="484079248335-d4kd454b6p9cu9uesk3618b93fj347cl.apps.googleusercontent.com">
+
 
     <link href="<?php echo base_url('assets/');?>assets/css/theme.css" rel="stylesheet" />
 </head>

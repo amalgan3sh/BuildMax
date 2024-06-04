@@ -13,7 +13,19 @@ class RegistrationModel extends Model {
             'company_name' => $company_name,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
-            'password' => 'customer',
+            'user_type' => 'customer',
+        ];
+
+        return $this->insert($data);
+    }
+
+    public function create_brand_partner($company_name, $email, $password) {
+        // Insert data into the database
+        $data = [
+            'company_name' => $company_name,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
+            'user_type' => 'partner',
         ];
 
         return $this->insert($data);

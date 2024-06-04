@@ -2,14 +2,15 @@
 <html lang="en-US" dir="ltr">
 
 <head>
+    <!-- Start cookieyes banner --> 
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6c5771fd376fd4a6e4b3f44f/script.js"></script> 
+    <!-- End cookieyes banner -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Buildmax</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('assets/');?>assets/img/favicons/buildmax_logo_main.png">
@@ -38,6 +39,7 @@
 </head>
 
 <body>
+
     <main class="main" id="top">
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="data-navbar-on-scroll">
             <div class="container">
@@ -56,7 +58,7 @@
                         <li class="nav-item" data-anchor="data-anchor"><a class="nav-link fw-medium" href="<?php echo base_url('#faq'); ?>">FAQ</a></li>
                     </ul>
                     <form class="ps-lg-5" id="createAccountForm" action="<?php echo base_url('user_types') ?>">
-                        <button class="btn btn-lg btn-primary rounded-pill order-0" type="submit" id="createAccountButton">Create Account</button>
+                        <button class="btn btn-lg btn-primary rounded-pill order-0" type="submit" id="createAccountButton">Create Account / sign in</button>
                     </form>
                 </div>
             </div>

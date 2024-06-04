@@ -21,5 +21,32 @@ class PublicController extends BaseController
         // Return the combined view content
         return $header . $content.$footer;
     }
+    public function user_types() : string{
+        // Load the header and the main view, combining them into a single output
+        $header = view('public/public_header');
+        $content = view('public/user_types');
+        $footer = view('public/public_footer');
+        
+        // Return the combined view content
+        return $header . $content.$footer;
+    }
+    public function customer_registration() : string{
+        // Load the header and the main view, combining them into a single output
+        $header = view('public/public_header');
+        $content = view('public/customer_registration');
+        $footer = view('public/public_footer');
+        
+        // Return the combined view content
+        return $header . $content.$footer;
+    }
+    public function brand_partner_registration() : string{
+        // Load the header and the main view, combining them into a single output
+        $header = view('public/public_header');
+        $content = view('public/brand_partner_registration');
+        $footer = view('public/public_footer');
+        
+        // Return the combined view content
+        return $header . $content.$footer;
+    }
 
 }

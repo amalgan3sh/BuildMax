@@ -7,4 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'PublicController::index');
 $routes->get('create_account', 'PublicController::create_account');
+$routes->get('user_types', 'PublicController::user_types');
+$routes->get('customer_registration', 'PublicController::customer_registration');
+$routes->get('brand_partner_registration', 'PublicController::brand_partner_registration');
 

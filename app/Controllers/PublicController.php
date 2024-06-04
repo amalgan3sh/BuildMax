@@ -1,9 +1,16 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\RegistrationModel;
 
 class PublicController extends BaseController
 {
+    protected $RegistrationModel;
+
+    public function __construct() {
+        $this->RegistrationModel = new RegistrationModel();
+    }
+    
     public function index(): string
     {
         // Load the header and the main view, combining them into a single output
@@ -14,13 +21,7 @@ class PublicController extends BaseController
         // Return the combined view content
         return $header . $content.$footer;
     }
-    public function create_account() : string{
-        // Load the header and the main view, combining them into a single output
-        $content = view('public/create_account');
-        
-        // Return the combined view content
-        return $header . $content.$footer;
-    }
+
     public function user_types() : string{
         // Load the header and the main view, combining them into a single output
         $header = view('public/public_header');
@@ -47,6 +48,25 @@ class PublicController extends BaseController
         
         // Return the combined view content
         return $header . $content.$footer;
+    }
+
+    public function register_customer() {
+        // Get the form data using the request object
+        $company_name = $this->request->getPost('companyName');
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+
+        // Call model method to insert data
+        $inserted = $this->RegistrationModel->create_customer($company_name, $email, $password);
+
+        if ($inserted) {
+            // Handle successful insertion (e.g., redirect to a success page)
+            session()->setFlashdata('success', 'Registration successful!');
+
+        } else {
+            // Handle insertion failure (e.g., show an error message)
+        }
+        return redirect()->to('/customer_registration');
     }
 
 }

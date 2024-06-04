@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Buildmax</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -18,10 +19,22 @@
     <link rel="manifest" href="<?php echo base_url('assets/');?>assets/img/favicons/manifest.json">
     <meta name="msapplication-TileImage" content="<?php echo base_url('assets/');?>assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
-    <meta name="google-signin-client_id" content="484079248335-d4kd454b6p9cu9uesk3618b93fj347cl.apps.googleusercontent.com">
 
 
     <link href="<?php echo base_url('assets/');?>assets/css/theme.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            <?php if (session()->getFlashdata('success')): ?>
+                alert("<?= session()->getFlashdata('success'); ?>");
+            <?php endif; ?>
+
+            <?php if (session()->getFlashdata('error')): ?>
+                alert("<?= session()->getFlashdata('error'); ?>");
+            <?php endif; ?>
+        });
+    </script>
 </head>
 
 <body>

@@ -1,6 +1,9 @@
 
 
 <section class="py-0" id="home">
+<?php echo base_url();
+?>
+
     <div class="bg-holder" style="background-image:url(<?php echo base_url('assets/');?>assets/img/illustrations/hero-bg.png);background-position:bottom;background-size:cover;">
     </div>
     <!--/.bg-holder-->

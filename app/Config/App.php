@@ -16,8 +16,21 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/buildmax/';
+    public $baseURL = '';
 
+    // Fetch the site URL dynamically
+    public function __construct() {
+        parent::__construct();
+
+        // Check if it's running on HTTPS
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+
+        // Construct the base URL including the "buildmax/" segment
+        $baseURL = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/buildmax";
+
+        // Set the base URL
+        $this->baseURL = $baseURL;
+    }
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.

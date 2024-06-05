@@ -8,6 +8,12 @@ class RegistrationModel extends Model {
     protected $allowedFields = ['user_name', 'email', 'phone','password','company_name','user_type']; // fields allowed for mass assignment
 
     public function create_customer($company_name, $email, $password) {
+        // Check if the email is already registered
+        $existingCustomer = $this->get_customer_by_email($email);
+        if ($existingCustomer !== null) {
+            // Account is already registered, return a message or throw an exception
+            return 'exists';
+        }
         // Insert data into the database
         $data = [
             'company_name' => $company_name,
@@ -17,6 +23,13 @@ class RegistrationModel extends Model {
         ];
 
         return $this->insert($data);
+    }
+    private function get_customer_by_email($email) {
+        // Implement a method to retrieve a customer by email from the database
+        // This method may vary depending on your database structure and ORM usage
+        // Here's a simplified example assuming you're using CodeIgniter's Query Builder
+        $query = $this->db->table('users')->where('email', $email)->get();
+        return $query->getRow();
     }
 
     public function create_brand_partner($company_name, $email, $password) {

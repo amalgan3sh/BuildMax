@@ -9,87 +9,122 @@ class PublicController extends BaseController
 {
     protected $RegistrationModel;
     protected $cache;
+    protected $useCache;
+    protected $cacheTime;
 
     public function __construct() {
         $this->RegistrationModel = new RegistrationModel();
         $this->cache = \Config\Services::cache(); // Load the cache service
+        $this->useCache = getenv('CI_ENVIRONMENT') === 'production'; // Only use cache in production
+        $this->cacheTime = getenv('CI_CACHE_TIME');; // Cache time in seconds (10 minutes)
     }
     
     public function index(): string
     {
-        $cacheKey = 'public_index_view';
-        $cachedContent = $this->cache->get($cacheKey);
+        if ($this->useCache) {
+            $cacheKey = 'public_index_view';
+            $cachedContent = $this->cache->get($cacheKey);
 
-        if ($cachedContent === null) {
-            // Cache miss, generate the content
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $header = view('public/public_header');
+                $content = view('public/index');
+                $footer = view('public/public_footer');
+                $cachedContent = $header . $content . $footer;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
             $header = view('public/public_header');
             $content = view('public/index');
             $footer = view('public/public_footer');
-            $cachedContent = $header . $content . $footer;
-
-            // Save the content to the cache for 10 minutes (600 seconds)
-            $this->cache->save($cacheKey, $cachedContent, 600);
+            return $header . $content . $footer;
         }
-
-
-        return $cachedContent;
     }
 
     public function user_types(): string
     {
-        $cacheKey = 'user_types_view';
-        $cachedContent = $this->cache->get($cacheKey);
+        if ($this->useCache) {
+            $cacheKey = 'user_types_view';
+            $cachedContent = $this->cache->get($cacheKey);
 
-        if ($cachedContent === null) {
-            // Cache miss, generate the content
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $header = view('public/public_header');
+                $content = view('public/user_types');
+                $footer = view('public/public_footer');
+                $cachedContent = $header . $content . $footer;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
             $header = view('public/public_header');
             $content = view('public/user_types');
             $footer = view('public/public_footer');
-            $cachedContent = $header . $content . $footer;
-
-            // Save the content to the cache for 10 minutes (600 seconds)
-            $this->cache->save($cacheKey, $cachedContent, 600);
+            return $header . $content . $footer;
         }
-
-        return $cachedContent;
     }
 
     public function customer_registration(): string
     {
-        $cacheKey = 'customer_registration_view';
-        $cachedContent = $this->cache->get($cacheKey);
+        if ($this->useCache) {
+            $cacheKey = 'customer_registration_view';
+            $cachedContent = $this->cache->get($cacheKey);
 
-        if ($cachedContent === null) {
-            // Cache miss, generate the content
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $header = view('public/public_header');
+                $content = view('public/customer_registration');
+                $footer = view('public/public_footer');
+                $cachedContent = $header . $content . $footer;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
             $header = view('public/public_header');
             $content = view('public/customer_registration');
             $footer = view('public/public_footer');
-            $cachedContent = $header . $content . $footer;
-
-            // Save the content to the cache for 10 minutes (600 seconds)
-            $this->cache->save($cacheKey, $cachedContent, 600);
+            return $header . $content . $footer;
         }
-
-        return $cachedContent;
     }
 
     public function brand_partner_registration(): string
     {
-        $cacheKey = 'brand_partner_registration_view';
-        $cachedContent = $this->cache->get($cacheKey);
+        if ($this->useCache) {
+            $cacheKey = 'brand_partner_registration_view';
+            $cachedContent = $this->cache->get($cacheKey);
 
-        if ($cachedContent === null) {
-            // Cache miss, generate the content
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $header = view('public/public_header');
+                $content = view('public/brand_partner_registration');
+                $footer = view('public/public_footer');
+                $cachedContent = $header . $content . $footer;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
             $header = view('public/public_header');
             $content = view('public/brand_partner_registration');
             $footer = view('public/public_footer');
-            $cachedContent = $header . $content . $footer;
-
-            // Save the content to the cache for 10 minutes (600 seconds)
-            $this->cache->save($cacheKey, $cachedContent, 600);
+            return $header . $content . $footer;
         }
-
-        return $cachedContent;
     }
 
     public function register_customer(): ResponseInterface
@@ -101,13 +136,18 @@ class PublicController extends BaseController
 
         // Call model method to insert data
         $inserted = $this->RegistrationModel->create_customer($company_name, $email, $password);
+        if($inserted=='exists'){
+            session()->setFlashdata('success', 'Account Exists');
 
-        if ($inserted) {
-            // Handle successful insertion (e.g., redirect to a success page)
-            session()->setFlashdata('success', 'Registration successful!');
-        } else {
-            // Handle insertion failure (e.g., show an error message)
+        }else{
+            if ($inserted) {
+                // Handle successful insertion (e.g., redirect to a success page)
+                session()->setFlashdata('success', 'Registration successful!');
+            } else {
+                // Handle insertion failure (e.g., show an error message)
+            }
         }
+        
 
         // Clear the related cache after insertion
         $this->cache->delete('customer_registration_view');
@@ -136,5 +176,29 @@ class PublicController extends BaseController
         $this->cache->delete('brand_partner_registration_view');
 
         return redirect()->to('/brand_partner_registration');
+    }
+
+    public function coming_soon(): string
+    {
+        if ($this->useCache) {
+            $cacheKey = 'coming_soon_view';
+            $cachedContent = $this->cache->get($cacheKey);
+
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $content = view('coming_soon');
+                $cachedContent = $content;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
+            $content = view('coming_soon');
+            $cachedContent = $content;
+            return $cachedContent;
+        }
     }
 }

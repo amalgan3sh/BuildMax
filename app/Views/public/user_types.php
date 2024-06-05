@@ -22,7 +22,9 @@
                                     <li class="text-700 py-2 text-secondary">Easy bulk ordering</li>
                                     <li class="text-700 py-2 text-secondary">Dedicated customer support</li>
                                 </ul>
-                                <a class="btn btn-lg btn-primary rounded-pill mb-3" href="<?php echo base_url('customer_registration'); ?>">Register as B2B Customer</a>
+                                <a class="btn btn-lg btn-primary rounded-pill mb-3" style="background-color: #FCAE61 !important; border-color: #FFFFFF !important;" href="<?php echo base_url('customer_registration'); ?>">Register as B2B Customer</a>
+                                <a class="btn btn-lg btn-primary rounded-pill mb-3" href="<?php echo base_url('coming_soon'); ?>">Log in</a>
+
                             </div>
                         </div>
                     </div>
@@ -39,7 +41,9 @@
                                     <li class="text-700 py-2 text-secondary">5-year subscription plan</li>
                                     <li class="text-700 py-2 text-secondary">Turnover benefits</li>
                                 </ul>
-                                <a class="btn btn-lg btn-primary rounded-pill mb-3" href="<?php echo base_url('brand_partner_registration'); ?>">Register as Brand Partner</a>
+                                <a class="btn btn-lg btn-primary rounded-pill mb-3" style="background-color: #FCAE61 !important; border-color: #FFFFFF !important;" href="<?php echo base_url('brand_partner_registration'); ?>">Register as Brand Partner</a>
+                                <a class="btn btn-lg btn-primary rounded-pill mb-3" href="<?php echo base_url('customer_registration'); ?>">Log in</a>
+
                             </div>
                         </div>
                     </div>

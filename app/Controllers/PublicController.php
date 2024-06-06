@@ -165,11 +165,16 @@ class PublicController extends BaseController
         // Call model method to insert data
         $inserted = $this->RegistrationModel->create_brand_partner($company_name, $email, $password);
 
-        if ($inserted) {
-            // Handle successful insertion (e.g., redirect to a success page)
-            session()->setFlashdata('success', 'Registration successful!');
-        } else {
-            // Handle insertion failure (e.g., show an error message)
+        if($inserted=='exists'){
+            session()->setFlashdata('success', 'Account Exists');
+
+        }else{
+            if ($inserted) {
+                // Handle successful insertion (e.g., redirect to a success page)
+                session()->setFlashdata('success', 'Registration successful!');
+            } else {
+                // Handle insertion failure (e.g., show an error message)
+            }
         }
 
         // Clear the related cache after insertion
@@ -201,4 +206,58 @@ class PublicController extends BaseController
             return $cachedContent;
         }
     }
+    public function customerLogin(): string
+    {
+        if ($this->useCache) {
+            $cacheKey = 'customer_login_view';
+            $cachedContent = $this->cache->get($cacheKey);
+
+            if ($cachedContent === null) {
+                // Cache miss, generate the content
+                $header = view('public/public_header');
+                $content = view('public/customer_login');
+                $footer = view('public/public_footer');
+                $cachedContent = $header . $content . $footer;
+
+                // Save the content to the cache
+                $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+            }
+
+            return $cachedContent;
+        } else {
+            // Cache disabled, generate the content directly
+            $header = view('public/public_header');
+            $content = view('public/customer_login');
+            $footer = view('public/public_footer');
+            return $header . $content . $footer;
+        }
+    }
+    public function loginProcess(): ResponseInterface
+    {
+        try {
+            // Get the form data using the request object
+            $phone = $this->request->getPost('phone');
+            $password = $this->request->getPost('password');
+
+            // Call model method to check login credentials
+            $loggedIn = $this->RegistrationModel->customerLogin($phone, $password);
+
+            if ($loggedIn==1) {
+                // Handle successful login (e.g., redirect to dashboard)
+                session()->setFlashdata('success', 'Login successful!');
+                return redirect()->to('/dashboard');
+            } else {
+                // Handle login failure (e.g., show an error message)
+                session()->setFlashdata('error', 'Invalid phone number or password. Please try again.');
+                return redirect()->to('/customer_login'); // Redirect back to the login page
+            }
+        }
+        catch (\Exception $e) {
+            // Handle any exceptions that occur during login process
+            log_message('error', 'Login process failed: ' . $e->getMessage());
+            session()->setFlashdata('error', 'An unexpected error occurred. Please try again later.');
+            return redirect()->to('/customer_login'); // Redirect back to the login page
+        }
+    }
+
 }

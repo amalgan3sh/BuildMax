@@ -13,4 +13,6 @@ $routes->get('brand_partner_registration', 'PublicController::brand_partner_regi
 $routes->post('register_customer', 'PublicController::register_customer');
 $routes->post('register_brand_partner', 'PublicController::register_brand_partner');
 $routes->get('coming_soon', 'PublicController::coming_soon');
+$routes->get('customer_login', 'PublicController::customerLogin');
+$routes->post('login_process', 'PublicController::loginProcess');
 

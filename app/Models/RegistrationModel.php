@@ -33,6 +33,12 @@ class RegistrationModel extends Model {
     }
 
     public function create_brand_partner($company_name, $email, $password) {
+        // Check if the email is already registered
+        $existingCustomer = $this->get_customer_by_email($email);
+        if ($existingCustomer !== null) {
+            // Account is already registered, return a message or throw an exception
+            return 'exists';
+        }
         // Insert data into the database
         $data = [
             'company_name' => $company_name,
@@ -43,4 +49,37 @@ class RegistrationModel extends Model {
 
         return $this->insert($data);
     }
+
+    public function customerLogin($phone, $password): bool
+    {
+        // Attempt to retrieve the user with the provided phone number
+        $user = $this->getUserByPhoneOrEmail($phone);
+
+        if ($user) {
+            // Verify the password
+            if (password_verify($password, $user->password)) {
+                // Password is correct, return true for successful login
+
+                return 'true';
+            }else{
+                return 'false';
+            }
+        }
+
+        // Either user doesn't exist or password is incorrect
+        return 'false';
+    }
+
+    private function getUserByPhoneOrEmail($identifier)
+    {
+
+        // Query the database to find the user by phone number or email address
+        // Here's an example assuming you're using CodeIgniter's Query Builder
+        return $this->db->table('users')
+                        ->where('phone', $identifier)
+                        ->orWhere('email', $identifier)
+                        ->get()
+                        ->getRow();
+    }
+
 }

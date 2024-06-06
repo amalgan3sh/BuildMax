@@ -1,78 +1,15 @@
-name: Deploy to cPanel
-
-on:
-  push:
-    branches:
-      - main  # or the branch you want to deploy
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run deployment script via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.CPANEL_HOST }}
-          username: ${{ secrets.CPANEL_USER }}
-          key: |
-            -----BEGIN OPENSSH PRIVATE KEY-----
-                b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
-                NhAAAAAwEAAQAAAgEAwG9zBnLNLtSdtsbGb0lIXZvkR+58c82E1RNKmpuBUlFQQd4A0MTA
-                2151TL60bucexRZBP0pMqRR+WvigwgiKwCopKi/NsyqJ3A9Ty8eJDJkLaWdiRKZwlZaLHK
-                bH8dvS1xeAC0azZ5XJXei38daZDChW3rX86LUYcEtje++LduJaeic7oXoxar/uI7siS/LW
-                SHKu01+F8PfUrl7UM8+bw1AU+1VgeT1hMEDokzZysdqbcasQp4t1kY55HUfdzzUNo79512
-                FUArS28F2DuB23NVvPFTnTq5HMckBczy9wxqMSgbRTb1tVf1sbpL0ZeCUjfjXMOKVAU36W
-                5My4u1iPF4qn1oQWn46byo2a7bq8r4f9aFbe6DkwDQKCGstH6vvLvAJiP88Y2gISwsS/H6
-                ecB4eWxx8afGPmLKji0ORj4as3mxbjINxhLplO+wt8irZ/96sTpP/flj1sGzLlxgnSPWga
-                QO1UTeJiotl3naXn5CKa2Eg6UIf0pSpZ7eZwuuo/UPNwJWAcEFLW31McM+jDnrIo/Zy7zD
-                m5qy/GCg4g3QIWmllqTsDj2Wew+JSfxMPgl6HO5A+urVQlaK3DA8QJXFTL173zXhn8YhFe
-                cbWfQ3cydr3gwnevRT8+04NfjuboXqjM84fqkVbzYeNbls6MlgjZlOh30NPSiy09xTp8BA
-                8AAAdQNSwR/DUsEfwAAAAHc3NoLXJzYQAAAgEAwG9zBnLNLtSdtsbGb0lIXZvkR+58c82E
-                1RNKmpuBUlFQQd4A0MTA2151TL60bucexRZBP0pMqRR+WvigwgiKwCopKi/NsyqJ3A9Ty8
-                eJDJkLaWdiRKZwlZaLHKbH8dvS1xeAC0azZ5XJXei38daZDChW3rX86LUYcEtje++LduJa
-                eic7oXoxar/uI7siS/LWSHKu01+F8PfUrl7UM8+bw1AU+1VgeT1hMEDokzZysdqbcasQp4
-                t1kY55HUfdzzUNo79512FUArS28F2DuB23NVvPFTnTq5HMckBczy9wxqMSgbRTb1tVf1sb
-                pL0ZeCUjfjXMOKVAU36W5My4u1iPF4qn1oQWn46byo2a7bq8r4f9aFbe6DkwDQKCGstH6v
-                vLvAJiP88Y2gISwsS/H6ecB4eWxx8afGPmLKji0ORj4as3mxbjINxhLplO+wt8irZ/96sT
-                pP/flj1sGzLlxgnSPWgaQO1UTeJiotl3naXn5CKa2Eg6UIf0pSpZ7eZwuuo/UPNwJWAcEF
-                LW31McM+jDnrIo/Zy7zDm5qy/GCg4g3QIWmllqTsDj2Wew+JSfxMPgl6HO5A+urVQlaK3D
-                A8QJXFTL173zXhn8YhFecbWfQ3cydr3gwnevRT8+04NfjuboXqjM84fqkVbzYeNbls6Mlg
-                jZlOh30NPSiy09xTp8BA8AAAADAQABAAACAQCvBS5i0QsY6ru+vy8/jDFLIjwPyDJcyLFl
-                cjRKReDq05XhMl8fgbO+UTzyXgiRTZfIvSL+wz7SEReS+cqMb2RyvmXOPsghijD0euRF1O
-                crFA8zAJp5wb9n7hH8LxxvNvWeN3t3xgfp0GvjA4Q5amqsigvoZzDtHbhqecazs/zuVZTg
-                wMoVZaOIaaPXz52z4dtO7S9gg+K4dU90gD8UGGCc1TsgFFi4LEE2t/JP4heS9zalvWZaXB
-                bEGgbBwNlWWfRb2Ayi/ZyBEYfJOeRREoXM/AFuVrfTtblyuGMw9P7nSu3MFgxEnZc3S8/q
-                lyqRAYY0hg2F/5Zv2hS3aBMkIbmRpS4JvazP8Chrj1GMX0F+TmQt30DnoazQ9W+BgUm2NS
-                Z7pQ39POoJXpKsIAANt1pplUURoymQpYtYhy5Jy06INVpOtaC58b9r2hELTEX0QMwoB89y
-                QKdA6UG5HyZE/OBn55u+ReEpzhiyGzfhCg6aMZhK94iO+tYJjnYOEQCKsEc4TIsGdaEel8
-                N7HNGfTbvEPKWOYpxaMPrA999NnBagDxlVPebWjx/g47IbbMCOxdqh9EI++8IozvTb6oC5
-                XZRX9UOZqRC3hvZlblcyf1SxUR3CXIg7e55CEpcj78izwug4oSvg0FiXsp5is+zZfkhnvY
-                fflceZ5yIVR0lAagbmMQAAAQEAwWtrMGnoQSYNcxiF/zxAMd9NpYTE8mm08Svq+7u650SE
-                yhqqzNIznxQWqGhH0SBL+GFwljGXjua41Vc8e0wOh+Cdq68gHnkYwORbN2MPm2UuNGS8JA
-                Xj0i13ODvd7CTfQF2RHp+gUOt/p2wLWtXGJhLoZrov/fWiG7KtniugC3kwvTS94CDOQ8WL
-                qtTyj0cmQB+HCSEXn5b/zCBkVMWdhZcUfmvhodt0anq2tFz6Wj16TF8KOYgHNICD4y0xoh
-                8niIe5uBp9RG3bsPp2mN0ZkyXKLRfx4/byH0PgtVdfyXN3cQ5gs1kV8eakf9fWeHHiY4jo
-                6kf08X0W5Kz4QfOCgwAAAQEA7MzXIsG0Wjx+FfprhSX59cy9bssq9hVyeDwwAfsXX0nweI
-                GN5LPhxyKDKAo6v6/S8bzeggkpWhe2g62ldcee2YBjKPQu0145+I0v6+DqCfcwYAT2pOV0
-                n4TKGDvZn+sJUI5sUvWxkPtD9RKOcZQyHFks3prj2WeytcM5EBcJzxYI2E12wdiYSRakUW
-                6T4PtO3y6vu5gmpe84o0qFCZo/wMdXtJiQ6NHZwO/eT5lqepDPwU9XJDiVOQRQICYmqaSn
-                ZQMHOwxqocbVbyKkaLA1i/7CiGPzPwK/t59hkj+0m+4h75/rn59/GikkLk0Gaako7QqMxp
-                6799FMHIN5bVKY4wAAAQEA0Am/YRjwMxun3P1fpjwxRbsSrEw676TjHR8NmN2tc7hPjDUE
-                6hRnv4nAsiMi1ywQ7BBJUNq2LSLYx3BHsa18SywiFgP5l5Y2ERkt+iSHVLyfYqoI6qSAh/
-                881CCf38qUQQlCJBdeYWvnuiIghYb70WtABkAGUg1I4hwK60xRpRHl3b0qDMoe5gjRkPOw
-                66wYOsS5v6lv5yQ+rDHUmHurmeXwqHYEs3EYeA5jZiNp72NiJRPu0SeU3f0rfNn2i2sd4R
-                J1fdmKOIrYAWnvEIRd9XHlWX5AoeHUsqBe2f1QuKa/NnJMcaeBVy1lM5ghlxZWZcs2j64M
-                WjbGnTgesPKL5QAAABZhbWFsZ2FuZXNoNHVAZ21haWwuY29tAQID
-            -----END OPENSSH PRIVATE KEY-----
-          script: |
-            cd /home1/lammygkk/buildmax.lammy.life
-            git pull origin main
-            # Add any additional deployment commands here, such as:
-            # composer install
-            # php spark migrate
-            # npm install
-            # npm run build
+- name: Run deployment script via SSH
+  uses: appleboy/ssh-action@master
+  with:
+    host: ${{ secrets.CPANEL_HOST }}
+    username: ${{ secrets.CPANEL_USER }}
+    key: ${{ secrets.SSH_PRIVATE_KEY }}
+    debug: true  # Enable verbose logging
+    script: |
+      cd /home1/lammygkk/buildmax.lammy.life
+      git pull origin main
+      # Add any additional deployment commands here, such as:
+      # composer install
+      # php spark migrate
+      # npm install
+      # npm run build

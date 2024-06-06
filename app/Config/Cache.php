@@ -20,7 +20,24 @@ class Cache extends BaseConfig
      *
      * The name of the preferred handler that should be used. If for some reason
      * it is not available, the $backupHandler will be used in its place.
+     * 
      */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $cachePath = WRITEPATH . 'cache';
+
+        if (!is_dir($cachePath)) {
+            if (!mkdir($cachePath, 0755, true) && !is_dir($cachePath)) {
+                throw CacheException::forUnableToWrite($cachePath);
+            }
+        }
+
+        if (!is_really_writable($cachePath)) {
+            throw CacheException::forUnableToWrite($cachePath);
+        }
+    }
     public string $handler = 'file';
 
     /**

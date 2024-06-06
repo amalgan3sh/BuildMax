@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           debug: true  # Enable verbose logging
           script: |
-            cd /home1/lammygkk/buildmax.lammy.life
+            cd /home1/lammygkk/
             git pull origin main
             # Add any additional deployment commands here, such as:
             # composer install

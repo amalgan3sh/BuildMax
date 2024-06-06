@@ -1,15 +1,30 @@
-- name: Run deployment script via SSH
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ secrets.CPANEL_HOST }}
-    username: ${{ secrets.CPANEL_USER }}
-    key: ${{ secrets.SSH_PRIVATE_KEY }}
-    debug: true  # Enable verbose logging
-    script: |
-      cd /home1/lammygkk/buildmax.lammy.life
-      git pull origin main
-      # Add any additional deployment commands here, such as:
-      # composer install
-      # php spark migrate
-      # npm install
-      # npm run build
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # or the branch you want to deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run deployment script via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          debug: true  # Enable verbose logging
+          script: |
+            cd /home1/lammygkk/buildmax.lammy.life
+            git pull origin main
+            # Add any additional deployment commands here, such as:
+            # composer install
+            # php spark migrate
+            # npm install
+            # npm run build

@@ -19,8 +19,9 @@ jobs:
           host: ${{ secrets.CPANEL_HOST }}
           username: ${{ secrets.CPANEL_USER }}
           key: ${{ secrets.CPANEL_SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}  # Provide the passphrase from your GitHub secrets
           script: |
-            cd /path/to/your/repository/on/server
+            cd /home1/lammygkk/buildmax.lammy.life
             git pull origin main
             # Add any additional deployment commands here, such as:
             # composer install

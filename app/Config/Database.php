@@ -35,13 +35,17 @@ class Database extends \CodeIgniter\Database\Config
     {
         parent::__construct();
 
-        // Set the default database connection using values from the .env file
+            // Determine environment based on server hostname
+    $environment = ($_SERVER['HTTP_HOST'] === 'buildmax.lammy.life') ? 'production' : 'development';
+
+    // Set the appropriate database connection based on the environment
+    if ($environment === 'production') {
         $this->default = [
             'DSN'          => '',
-            'hostname'     => $_ENV['HOSTNAME'],
-            'username'     => $_ENV['USERNAME'],
-            'password'     => $_ENV['PASSWORD'],
-            'database'     => $_ENV['DATABASE'],
+            'hostname'     => $_ENV['PROD_HOSTNAME'],
+            'username'     => $_ENV['PROD_USERNAME'],
+            'password'     => $_ENV['PROD_PASSWORD'],
+            'database'     => $_ENV['PROD_DATABASE'],
             'DBDriver'     => 'MySQLi',
             'DBPrefix'     => '',
             'pConnect'     => false,
@@ -61,6 +65,35 @@ class Database extends \CodeIgniter\Database\Config
                 'time'     => 'H:i:s',
             ],
         ];
+    } else {
+        $this->default = [
+            'DSN'          => '',
+            'hostname'     => $_ENV['DEV_HOSTNAME'],
+            'username'     => $_ENV['DEV_USERNAME'],
+            'password'     => $_ENV['DEV_PASSWORD'],
+            'database'     => $_ENV['DEV_DATABASE'],
+            'DBDriver'     => 'MySQLi',
+            'DBPrefix'     => '',
+            'pConnect'     => false,
+            'DBDebug'      => true,
+            'charset'      => 'utf8mb4',
+            'DBCollat'     => 'utf8mb4_general_ci',
+            'swapPre'      => '',
+            'encrypt'      => false,
+            'compress'     => false,
+            'strictOn'     => false,
+            'failover'     => [],
+            'port'         => 3306,
+            'numberNative' => false,
+            'dateFormat'   => [
+                'date'     => 'Y-m-d',
+                'datetime' => 'Y-m-d H:i:s',
+                'time'     => 'H:i:s',
+            ],
+        ];
+    }
+
+       
 
         // Set the testing database connection
         $this->tests = [

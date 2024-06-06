@@ -242,10 +242,10 @@ class PublicController extends BaseController
             // Call model method to check login credentials
             $loggedIn = $this->RegistrationModel->customerLogin($phone, $password);
 
-            if ($loggedIn==1) {
+            if (json_encode($loggedIn)==true) {
                 // Handle successful login (e.g., redirect to dashboard)
                 session()->setFlashdata('success', 'Login successful!');
-                return redirect()->to('/dashboard');
+                return redirect()->to('/partner_home');
             } else {
                 // Handle login failure (e.g., show an error message)
                 session()->setFlashdata('error', 'Invalid phone number or password. Please try again.');
@@ -259,5 +259,102 @@ class PublicController extends BaseController
             return redirect()->to('/customer_login'); // Redirect back to the login page
         }
     }
+    public function partnerHome(): string
+    {
+        try {
+            if ($this->useCache) {
+                $cacheKey = 'partner_home_view';
+                $cachedContent = $this->cache->get($cacheKey);
+    
+                if ($cachedContent === null) {
+                    // Cache miss, generate the content
+                    // $header = view('public/public_header');
+                    $content = view('partner/partner_home');
+                    // $footer = view('public/public_footer');
+                    $cachedContent = $content;
+    
+                    // Save the content to the cache
+                    $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+                }
+    
+                return $cachedContent;
+            } else {
+                // Cache disabled, generate the content directly
+                // $header = view('public/public_header');
+                $content = view('partner/partner_home');
+                // $footer = view('public/public_footer');
+                return $content;
+            }
+        }
+        catch (\Exception $e) {
+            // Handle any exceptions that occur during login process
+            log_message('error', 'Login process failed: ' . $e->getMessage());
+            session()->setFlashdata('error', 'An unexpected error occurred. Please try again later.');
+            return redirect()->to('/customer_login'); // Redirect back to the login page
+        }
+    }
+
+    public function OTPVerification(): string
+    {
+        try {
+            if ($this->useCache) {
+                $cacheKey = 'otp_verification_view';
+                $cachedContent = $this->cache->get($cacheKey);
+    
+                if ($cachedContent === null) {
+                    // Cache miss, generate the content
+                    $header = view('public/public_header');
+                    $content = view('public/otp_verification');
+                    $footer = view('public/public_footer');
+                    $cachedContent =  $header . $content . $footer;
+    
+                    // Save the content to the cache
+                    $this->cache->save($cacheKey, $cachedContent, $this->cacheTime);
+                }
+    
+                return $cachedContent;
+            } else {
+                // Cache disabled, generate the content directly
+                $header = view('public/public_header');
+                $content = view('public/otp_verification');
+                $footer = view('public/public_footer');
+                return  $header . $content . $footer;
+            }
+        }
+        catch (\Exception $e) {
+            // Handle any exceptions that occur during login process
+            log_message('error', 'Login process failed: ' . $e->getMessage());
+            session()->setFlashdata('error', 'An unexpected error occurred. Please try again later.');
+            return 'An unexpected error occurred.';
+        }
+    }
+    
+    public function otp_login_process(): ResponseInterface
+    {
+        try {
+            // Get the form data using the request object
+            $phone = $this->request->getPost('phone');
+            $otp = $this->request->getPost('otp');
+
+            // Call model method to check login credentials
+            $loggedIn = $this->RegistrationModel->otpLogin($phone, $otp);
+
+            if ($loggedIn) { // Directly check the boolean value
+                // Handle successful login (e.g., redirect to dashboard)
+                session()->setFlashdata('success', 'Login successful!');
+                return redirect()->to('/partner_home');
+            } else {
+                // Handle login failure (e.g., show an error message)
+                session()->setFlashdata('error', 'Invalid phone number or OTP. Please try again.');
+                return redirect()->to('/customer_login'); // Redirect back to the login page
+            }
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the login process
+            log_message('error', 'Login process failed: ' . $e->getMessage());
+            session()->setFlashdata('error', 'An unexpected error occurred. Please try again later.');
+            return redirect()->to('/customer_login'); // Redirect back to the login page
+        }
+    }
+
 
 }

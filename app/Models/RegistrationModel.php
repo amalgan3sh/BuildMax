@@ -59,15 +59,13 @@ class RegistrationModel extends Model {
             // Verify the password
             if (password_verify($password, $user->password)) {
                 // Password is correct, return true for successful login
-
-                return 'true';
+                return true;
             }else{
-                return 'false';
+                return false;
             }
         }
-
         // Either user doesn't exist or password is incorrect
-        return 'false';
+        return false;
     }
 
     private function getUserByPhoneOrEmail($identifier)
@@ -81,5 +79,25 @@ class RegistrationModel extends Model {
                         ->get()
                         ->getRow();
     }
+    
+    public function otpLogin($phone, $otp)
+    {
+        // Check if the provided phone number exists in the database
+        $user = $this->getUserByPhoneOrEmail($phone);
+
+        if ($user) {
+            // Phone number exists, update the OTP column with "2255"
+            $this->db->table('users')->where('phone', $phone)->update(['otp' => '2255']);
+            
+            // Check if the provided OTP is "2255"
+            if ($otp === '2255') {
+                return true; // Return true to indicate successful login
+            }
+        }
+        
+        // Either phone number doesn't exist or OTP is incorrect
+        return false;
+    }
+
 
 }

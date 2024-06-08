@@ -32,27 +32,59 @@ class RegistrationModel extends Model {
         return $query->getRow();
     }
 
-    public function create_brand_partner($company_name, $email, $password) {
+    public function create_brand_partner($company_name, $phone, $email, $password) {
         // Check if the email is already registered
         $existingCustomer = $this->get_customer_by_email($email);
         if ($existingCustomer !== null) {
             // Account is already registered, return a message or throw an exception
             return 'exists';
         }
+    
+        // Generate username from company name
+        $username = $this->generate_username($company_name);
+    
         // Insert data into the database
         $data = [
             'company_name' => $company_name,
+            'phone' =>  $phone,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
+            'user_name' => $username, // Adjusted to user_name column
             'user_type' => 'partner',
         ];
-
+    
         return $this->insert($data);
     }
+    
+    private function generate_username($company_name) {
+        // Convert company name to lowercase and remove spaces
+        $username = strtolower(str_replace(' ', '', $company_name));
+        // Check if this username already exists in the users table
+        $suffix = '';
+        $counter = 1;
+        while ($this->is_username_taken($username . $suffix)) {
+            $suffix = '_' . $counter;
+            $counter++;
+        }
+        return $username . $suffix;
+    }
+    
+    private function is_username_taken($username) {
+        // Query the users table to check if the username already exists
+        $query = $this->db->table('users')
+                         ->selectCount('user_name')
+                         ->where('user_name', $username)
+                         ->get();
+        // Fetch the result
+        $row = $query->getRow();
+        // Check if any rows were found with this username
+        return ($row->user_name > 0);
+    }
+    
 
     public function customerLogin($phone, $password): bool
     {
-        // Attempt to retrieve the user with the provided phone number
+        // Attempt to retrieve the user with the provided phone number or email
         $user = $this->getUserByPhoneOrEmail($phone);
 
         if ($user) {
@@ -60,25 +92,36 @@ class RegistrationModel extends Model {
             if (password_verify($password, $user->password)) {
                 // Password is correct, return true for successful login
                 return true;
-            }else{
+            } else {
+                // Password is incorrect
                 return false;
             }
         }
-        // Either user doesn't exist or password is incorrect
+        // User doesn't exist with the provided phone number or email
         return false;
     }
 
     private function getUserByPhoneOrEmail($identifier)
     {
-
         // Query the database to find the user by phone number or email address
         // Here's an example assuming you're using CodeIgniter's Query Builder
-        return $this->db->table('users')
+        $query = $this->db->table('users')
                         ->where('phone', $identifier)
                         ->orWhere('email', $identifier)
-                        ->get()
-                        ->getRow();
+                        ->get();
+
+        // Check if any rows were returned
+        if ($query->getNumRows() > 0) {
+            // Return the first row found
+            log_message('info', 'getUserByPhoneOrEmail: user exists');
+            return $query->getRow();
+        } else {
+            // No user found with the provided phone number or email
+            log_message('info', 'getUserByPhoneOrEmail: No user found with the provided phone number or email');
+            return null;
+        }
     }
+
     
     public function otpLogin($phone, $otp)
     {
@@ -97,6 +140,11 @@ class RegistrationModel extends Model {
         
         // Either phone number doesn't exist or OTP is incorrect
         return false;
+    }
+
+    public function getUserDataById($user_id)
+    {
+        return $this->find($user_id);
     }
 
 

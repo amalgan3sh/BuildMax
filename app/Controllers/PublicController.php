@@ -107,8 +107,9 @@ class PublicController extends BaseController
         $company_name = $this->request->getPost('companyName');
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
+        $phone = $this->request->getPost('phone');
 
-        $inserted = $this->RegistrationModel->create_brand_partner($company_name, $email, $password);
+        $inserted = $this->RegistrationModel->create_brand_partner($company_name, $phone, $email, $password);
         if ($inserted == 'exists') {
             session()->setFlashdata('success', 'Account Exists');
         } else {
@@ -121,29 +122,50 @@ class PublicController extends BaseController
 
         $this->cache->delete('brand_partner_registration_view');
 
-        return redirect()->to('/brand_partner_registration');
+        return redirect()->to('/customer_login');
     }
 
     public function loginProcess(): ResponseInterface
     {
         try {
+            // Retrieve phone number and password from POST request
             $phone = $this->request->getPost('phone');
             $password = $this->request->getPost('password');
-
-            $loggedIn = $this->RegistrationModel->customerLogin($phone, $password);
-            if ($loggedIn) {
+    
+            // Authenticate user
+            $user_id = $this->RegistrationModel->customerLogin($phone, $password);
+    
+            if ($user_id) {
+                // Store user_id in session
+                session()->set('user_id', $user_id);
+                
+                // Fetch user's data from the database based on user_id
+                $userData = $this->RegistrationModel->getUserDataById($user_id);
+                
+                // Store user data in session
+                session()->set('user_data', $userData);
+    
+                // Set success flash message
                 session()->setFlashdata('success', 'Login successful!');
+                
+                // Redirect to partner home page
                 return redirect()->to('/partner_home');
             } else {
+                // Set error flash message for invalid login
                 session()->setFlashdata('error', 'Invalid phone number or password. Please try again.');
                 return redirect()->to('/customer_login');
             }
         } catch (\Exception $e) {
+            // Log the exception message
             log_message('error', 'Login process failed: ' . $e->getMessage());
+            
+            // Set generic error flash message
             session()->setFlashdata('error', 'An unexpected error occurred. Please try again later.');
             return redirect()->to('/customer_login');
         }
     }
+    
+
 
     public function otp_login_process(): ResponseInterface
     {

@@ -67,6 +67,7 @@ class App extends BaseConfig
      */
     public string $indexPage = '';
 
+
     /**
      * --------------------------------------------------------------------------
      * URI PROTOCOL

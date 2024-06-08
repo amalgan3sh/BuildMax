@@ -16,12 +16,22 @@ class PartnerController extends BaseController
 
     public function partnerHome(): string
     {
-        return $this->renderView('partner_home_view', 'partner/partner_home');
+        $userData = session()->get('user_data');
+        
+        return $this->renderView('partner_home_view', 'partner/partner_home', $userData);
     }
 
     public function productDetails(): string
     {
         return $this->renderView('product_details_view', 'partner/dashboard/product_details');
+    }
+    public function Market(): string
+    {
+        return $this->renderView('market_view', 'partner/dashboard/market');
+    }
+    public function Portfolio(): string
+    {
+        return $this->renderView('market_view', 'partner/dashboard/portfolio');
     }
 
     /**
@@ -50,12 +60,20 @@ class PartnerController extends BaseController
         }
     }
 
-    private function renderView(string $cacheKey, string $viewName): string
+    private function renderView(string $cacheKey, string $viewName, array $data = []): string
     {
-        return $this->renderCache($cacheKey, function() use ($viewName) {
-            return view('partner/partner_header')
-                . view('partner/partner_slidebar')
-                . view($viewName);
+        return $this->renderCache($cacheKey, function() use ($viewName, $data) {
+            // Always get user data for every view
+            $userData = session()->get('user_data') ?? [];
+            $userData = is_array($userData) && !empty($userData) ? $userData[0] : [];
+            
+            // Merge $userData with additional data passed to the method
+            $viewData = array_merge(['userData' => $userData], $data);
+
+            return view('partner/partner_header', $viewData)
+                . view('partner/partner_sidebar', $viewData)
+                . view($viewName, $viewData);
         });
     }
+
 }

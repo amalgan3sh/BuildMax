@@ -12,8 +12,12 @@
                     <div class="card-body mx-auto">
                         <form id="b2b-register-form" action="<?php echo base_url('register_brand_partner'); ?>" method="POST">
                             <div class="mb-3">
-                                <label for="companyName" class="form-label">Company Name</label>
+                                <label for="companyName" class="form-label">Full Name</label>
                                 <input type="text" class="form-control" id="companyName" name="companyName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" name="phone" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>

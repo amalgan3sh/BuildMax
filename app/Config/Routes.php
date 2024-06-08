@@ -21,6 +21,11 @@ $routes->post('otp_login_process', 'PublicController::otp_login_process');
 //partner-routes
 $routes->get('partner_home', 'PartnerController::partnerHome');
 $routes->get('product_details', 'PartnerController::productDetails');
+$routes->get('market', 'PartnerController::Market');
+$routes->get('portfolio', 'PartnerController::Portfolio');
+
+//auth
+$routes->get('/logout', 'AuthController::logout');
 
 
 

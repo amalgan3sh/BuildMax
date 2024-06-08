@@ -32,7 +32,7 @@
                             </div>
                             <div class="g_id_signin" data-type="standard"></div>
                         </div>
-                        <div class="text-center mb-3">Not registered yet? <a href="<?php echo base_url('brand_partner_registration'); ?>">Register with us</a></div>
+                        <div class="text-center mb-3">Not registered yet? <a href="<?php echo base_url('brand_partner_registration'); ?>">Register as Brand partner</a></div>
                         <div id="error-message" class="text-danger mt-3"></div> <!-- Error message container -->
                     </div>
                 </div>

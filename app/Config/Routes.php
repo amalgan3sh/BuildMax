@@ -15,9 +15,13 @@ $routes->post('register_brand_partner', 'PublicController::register_brand_partne
 $routes->get('coming_soon', 'PublicController::coming_soon');
 $routes->get('customer_login', 'PublicController::customerLogin');
 $routes->post('login_process', 'PublicController::loginProcess');
-$routes->get('partner_home', 'PublicController::partnerHome');
 $routes->get('otp_verification', 'PublicController::OTPVerification');
 $routes->post('otp_login_process', 'PublicController::otp_login_process');
+
+//partner-routes
+$routes->get('partner_home', 'PartnerController::partnerHome');
+$routes->get('product_details', 'PartnerController::productDetails');
+
 
 
 

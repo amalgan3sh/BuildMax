@@ -17,81 +17,75 @@ class PublicController extends BaseController
         $this->cache = \Config\Services::cache(); // Load the cache service
         $this->useCache = getenv('CI_ENVIRONMENT') === 'production'; // Only use cache in production
         $this->cacheTime = getenv('CI_CACHE_TIME') ? (int)getenv('CI_CACHE_TIME') : 600; // Cache time in seconds (10 minutes)
-
     }
     
     public function index(): string
     {
-        $cacheKey = 'public_index_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/index') . view('public/public_footer');
-        });
+        return $this->renderView('public_index_view', [
+            'public/public_header',
+            'public/index',
+            'public/public_footer'
+        ]);
     }
 
     public function user_types(): string
     {
-        $cacheKey = 'user_types_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/user_types') . view('public/public_footer');
-        });
+        return $this->renderView('user_types_view', [
+            'public/public_header',
+            'public/user_types',
+            'public/public_footer'
+        ]);
     }
 
     public function customer_registration(): string
     {
-        $cacheKey = 'customer_registration_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/customer_registration') . view('public/public_footer');
-        });
+        return $this->renderView('customer_registration_view', [
+            'public/public_header',
+            'public/customer_registration',
+            'public/public_footer'
+        ]);
     }
 
     public function brand_partner_registration(): string
     {
-        $cacheKey = 'brand_partner_registration_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/brand_partner_registration') . view('public/public_footer');
-        });
+        return $this->renderView('brand_partner_registration_view', [
+            'public/public_header',
+            'public/brand_partner_registration',
+            'public/public_footer'
+        ]);
     }
 
     public function coming_soon(): string
     {
-        $cacheKey = 'coming_soon_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('coming_soon');
-        });
+        return $this->renderView('coming_soon_view', [
+            'coming_soon'
+        ]);
     }
 
     public function customerLogin(): string
     {
-        $cacheKey = 'customer_login_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/customer_login') . view('public/public_footer');
-        });
-    }
-
-    public function partnerHome(): string
-    {
-        $cacheKey = 'partner_home_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('partner/partner_home');
-        });
+        return $this->renderView('customer_login_view', [
+            'public/public_header',
+            'public/customer_login',
+            'public/public_footer'
+        ]);
     }
 
     public function OTPVerification(): string
     {
-        $cacheKey = 'otp_verification_view';
-        return $this->renderCache($cacheKey, function() {
-            return view('public/public_header') . view('public/otp_verification') . view('public/public_footer');
-        });
+        return $this->renderView('otp_verification_view', [
+            'public/public_header',
+            'public/otp_verification',
+            'public/public_footer'
+        ]);
     }
 
     public function register_customer(): ResponseInterface
     {
-        // Get the form data using the request object
         $company_name = $this->request->getPost('companyName');
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        // Call model method to insert data
         $inserted = $this->RegistrationModel->create_customer($company_name, $email, $password);
         if ($inserted == 'exists') {
             session()->setFlashdata('success', 'Account Exists');
@@ -103,7 +97,6 @@ class PublicController extends BaseController
             }
         }
 
-        // Clear the related cache after insertion
         $this->cache->delete('customer_registration_view');
 
         return redirect()->to('/customer_registration');
@@ -111,12 +104,10 @@ class PublicController extends BaseController
 
     public function register_brand_partner(): ResponseInterface
     {
-        // Get the form data using the request object
         $company_name = $this->request->getPost('companyName');
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        // Call model method to insert data
         $inserted = $this->RegistrationModel->create_brand_partner($company_name, $email, $password);
         if ($inserted == 'exists') {
             session()->setFlashdata('success', 'Account Exists');
@@ -128,7 +119,6 @@ class PublicController extends BaseController
             }
         }
 
-        // Clear the related cache after insertion
         $this->cache->delete('brand_partner_registration_view');
 
         return redirect()->to('/brand_partner_registration');
@@ -180,7 +170,7 @@ class PublicController extends BaseController
      * Renders content from cache if available, otherwise generates and caches it.
      *
      * @param string $cacheKey The cache key to use.
-     * @param callable $contentGenerator A callable that generates the content if cache is missed.
+     * @param array $views An array of view names to be concatenated.
      * @return string The cached or generated content.
      */
     private function renderCache(string $cacheKey, callable $contentGenerator): string
@@ -200,5 +190,23 @@ class PublicController extends BaseController
             // Cache disabled, generate the content directly
             return $contentGenerator();
         }
+    }
+
+    /**
+     * Renders a series of views and caches the result.
+     *
+     * @param string $cacheKey The cache key to use.
+     * @param array $views An array of view names to be concatenated.
+     * @return string The cached or generated content.
+     */
+    private function renderView(string $cacheKey, array $views): string
+    {
+        return $this->renderCache($cacheKey, function() use ($views) {
+            $content = '';
+            foreach ($views as $view) {
+                $content .= view($view);
+            }
+            return $content;
+        });
     }
 }

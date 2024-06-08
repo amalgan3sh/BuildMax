@@ -14,23 +14,33 @@ class PartnerController extends BaseController
         $this->cacheTime = getenv('CI_CACHE_TIME') ? (int)getenv('CI_CACHE_TIME') : 600; // Cache time in seconds (10 minutes)
     }
 
-    public function partnerHome(): string
+    public function partnerHome()
     {
-        $userData = session()->get('user_data');
-        
-        return $this->renderView('partner_home_view', 'partner/partner_home', $userData);
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
+        return $this->renderView('partner_home_view', 'partner/partner_home');
     }
 
-    public function productDetails(): string
+    public function productDetails()
     {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
         return $this->renderView('product_details_view', 'partner/dashboard/product_details');
     }
-    public function Market(): string
+    public function Market()
     {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
         return $this->renderView('market_view', 'partner/dashboard/market');
     }
-    public function Portfolio(): string
+    public function Portfolio()
     {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
         return $this->renderView('market_view', 'partner/dashboard/portfolio');
     }
 
@@ -74,6 +84,16 @@ class PartnerController extends BaseController
                 . view('partner/partner_sidebar', $viewData)
                 . view($viewName, $viewData);
         });
+    }
+
+    /**
+     * Checks if the user session is active.
+     *
+     * @return bool True if the session is active, false otherwise.
+     */
+    private function checkSession(): bool
+    {
+        return session()->has('user_data');
     }
 
 }

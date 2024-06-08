@@ -2,8 +2,19 @@
 
 namespace App\Controllers;
 
-class AuthController extends BaseController
+use CodeIgniter\Controller;
+use CodeIgniter\Session\Session;
+
+class AuthController extends Controller
 {
+    protected $session;
+
+    public function __construct()
+    {
+        // Load the session service
+        $this->session = \Config\Services::session();
+    }
+
     public function login()
     {
         // Your login logic here

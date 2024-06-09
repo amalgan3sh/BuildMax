@@ -23,6 +23,10 @@ $routes->get('partner_home', 'PartnerController::partnerHome');
 $routes->get('product_details', 'PartnerController::productDetails');
 $routes->get('market', 'PartnerController::Market');
 $routes->get('portfolio', 'PartnerController::Portfolio');
+$routes->get('partner_profile', 'PartnerController::partnerProfile');
+$routes->get('edit_profile', 'PartnerController::editProfile');
+$routes->post('update_profile', 'PartnerController::updateProfile');
+
 
 //auth
 $routes->get('/logout', 'AuthController::logout');

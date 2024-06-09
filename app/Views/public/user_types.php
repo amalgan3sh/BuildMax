@@ -36,7 +36,7 @@
                             </div>
                             <div class="card-body mx-auto">
                                 <ul class="list-unstyled mb-4">
-                                    <li class="text-700 py-2 text-secondary">Invest in nutraceutical herbal products</li>
+                                    <li class="text-700 py-2 text-secondary">Invest in Health Care products</li>
                                     <li class="text-700 py-2 text-secondary">Earn benefits on B2B orders</li>
                                     <li class="text-700 py-2 text-secondary">5-year subscription plan</li>
                                     <li class="text-700 py-2 text-secondary">Turnover benefits</li>

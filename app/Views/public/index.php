@@ -54,79 +54,6 @@
     </div>
     <!-- end of .container-->
 </section>
- <script>
-
-document.addEventListener('DOMContentLoaded', function() {
-    const logoSlider = document.querySelector('.logo-slider');
-    const logoContainer = document.querySelector('.logo-container');
-    const leftArrow = document.querySelector('.left-arrow');
-    const rightArrow = document.querySelector('.right-arrow');
-    const scrollAmount = 200; // Adjust this value to control scroll distance
-    const autoScrollInterval = 3000; // 3 seconds
-    let autoScrollTimer;
-
-    // Function to smoothly scroll the logos
-    function smoothScroll(element, to, duration) {
-        const start = element.scrollLeft;
-        const change = to - start;
-        const increment = 20;
-        let currentTime = 0;
-
-        function animateScroll() {
-            currentTime += increment;
-            const val = Math.easeInOutQuad(currentTime, start, change, duration);
-            element.scrollLeft = val;
-            if (currentTime < duration) {
-                setTimeout(animateScroll, increment);
-            }
-        }
-
-        animateScroll();
-    }
-
-    // Easing function for smooth scrolling
-    Math.easeInOutQuad = function(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-    };
-
-    // Auto-scroll function
-    function startAutoScroll() {
-        autoScrollTimer = setInterval(() => {
-            const newScrollLeft = logoSlider.scrollLeft + scrollAmount;
-            if (newScrollLeft >= logoContainer.scrollWidth - logoSlider.clientWidth) {
-                logoSlider.scrollLeft = 0;
-            } else {
-                smoothScroll(logoSlider, newScrollLeft, 1000);
-            }
-        }, autoScrollInterval);
-    }
-
-    // Stop auto-scrolling when user interacts
-    function stopAutoScroll() {
-        clearInterval(autoScrollTimer);
-    }
-
-    leftArrow.addEventListener('click', function() {
-        stopAutoScroll();
-        smoothScroll(logoSlider, logoSlider.scrollLeft - scrollAmount, 500);
-    });
-
-    rightArrow.addEventListener('click', function() {
-        stopAutoScroll();
-        smoothScroll(logoSlider, logoSlider.scrollLeft + scrollAmount, 500);
-    });
-
-    // Stop auto-scrolling when hovering over the slider
-    logoSlider.addEventListener('mouseenter', stopAutoScroll);
-    logoSlider.addEventListener('mouseleave', startAutoScroll);
-
-    // Start auto-scrolling
-    startAutoScroll();
-});
- </script>
 
       <!-- <section> close ============================-->
       <!-- ============================================-->
@@ -569,3 +496,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
       <!-- ============================================-->
+
+
+      <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+          const logoSlider = document.querySelector('.logo-slider');
+          const logoContainer = document.querySelector('.logo-container');
+          const leftArrow = document.querySelector('.left-arrow');
+          const rightArrow = document.querySelector('.right-arrow');
+          const scrollAmount = 200; // Adjust this value to control scroll distance
+          const autoScrollInterval = 3000; // 3 seconds
+          let autoScrollTimer;
+
+          // Function to smoothly scroll the logos
+          function smoothScroll(element, to, duration) {
+              const start = element.scrollLeft;
+              const change = to - start;
+              const increment = 20;
+              let currentTime = 0;
+
+              function animateScroll() {
+                  currentTime += increment;
+                  const val = Math.easeInOutQuad(currentTime, start, change, duration);
+                  element.scrollLeft = val;
+                  if (currentTime < duration) {
+                      setTimeout(animateScroll, increment);
+                  }
+              }
+
+              animateScroll();
+          }
+
+          // Easing function for smooth scrolling
+          Math.easeInOutQuad = function(t, b, c, d) {
+              t /= d / 2;
+              if (t < 1) return c / 2 * t * t + b;
+              t--;
+              return -c / 2 * (t * (t - 2) - 1) + b;
+          };
+
+          // Auto-scroll function
+          function startAutoScroll() {
+              autoScrollTimer = setInterval(() => {
+                  const newScrollLeft = logoSlider.scrollLeft + scrollAmount;
+                  if (newScrollLeft >= logoContainer.scrollWidth - logoSlider.clientWidth) {
+                      logoSlider.scrollLeft = 0;
+                  } else {
+                      smoothScroll(logoSlider, newScrollLeft, 1000);
+                  }
+              }, autoScrollInterval);
+          }
+
+          // Stop auto-scrolling when user interacts
+          function stopAutoScroll() {
+              clearInterval(autoScrollTimer);
+          }
+
+          leftArrow.addEventListener('click', function() {
+              stopAutoScroll();
+              smoothScroll(logoSlider, logoSlider.scrollLeft - scrollAmount, 500);
+          });
+
+          rightArrow.addEventListener('click', function() {
+              stopAutoScroll();
+              smoothScroll(logoSlider, logoSlider.scrollLeft + scrollAmount, 500);
+          });
+
+          // Stop auto-scrolling when hovering over the slider
+          logoSlider.addEventListener('mouseenter', stopAutoScroll);
+          logoSlider.addEventListener('mouseleave', startAutoScroll);
+
+          // Start auto-scrolling
+          startAutoScroll();
+      });
+ </script>

@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\PartnerModel; 
 
 class PartnerController extends BaseController
 {
+    protected $partnerModel;
     protected $cache;
     protected $useCache;
     protected $cacheTime;
 
-    public function __construct() {
+    public function __construct()
+    {
+        $this->partnerModel = new PartnerModel(); // Initialize the model
         $this->cache = \Config\Services::cache(); // Load the cache service
         $this->useCache = getenv('CI_ENVIRONMENT') === 'production'; // Only use cache in production
         $this->cacheTime = getenv('CI_CACHE_TIME') ? (int)getenv('CI_CACHE_TIME') : 600; // Cache time in seconds (10 minutes)
@@ -41,8 +45,92 @@ class PartnerController extends BaseController
         if (!$this->checkSession()) {
             return redirect()->to('/customer_login');
         }
-        return $this->renderView('market_view', 'partner/dashboard/portfolio');
+        $userId = session()->get('user_id');
+
+        $userProfile = $this->partnerModel->getUserById($userId);
+
+        // Pass the data to the view
+        $data = [
+            'userProfile' => $userProfile
+        ];
+
+        return $this->renderView('portfolio_view', 'partner/dashboard/portfolio',$data);
     }
+
+    public function partnerProfile()
+    {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
+        $userId = session()->get('user_id');
+
+        $userProfile = $this->partnerModel->getUserById($userId);
+
+        // Pass the data to the view
+        $data = [
+            'userProfile' => $userProfile
+        ];
+        return $this->renderView('partner_profile_view', 'partner/apps/partner_profile',$data);
+    }
+
+    public function editProfile()
+    {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
+        $userId = session()->get('user_id');
+
+        $userProfile = $this->partnerModel->getUserById($userId);
+
+        // Pass the data to the view
+        $data = [
+            'userProfile' => $userProfile
+        ];
+        return $this->renderView('market_view', 'partner/apps/partner_edit_profile', $data );
+    }
+
+    public function updateProfile()
+    {
+        if (!$this->checkSession()) {
+            return redirect()->to('/customer_login');
+        }
+        $userId = session()->get('user_id');
+        
+        // Handle profile photo upload
+        $profilePhoto = $this->request->getFile('profile_photo');
+        $profilePhotoName = null;
+        if ($profilePhoto->isValid() && !$profilePhoto->hasMoved()) {
+            $newName = $profilePhoto->getRandomName();
+            $profilePhoto->move(ROOTPATH . 'public/uploads/profiles', $newName);
+            $profilePhotoName = $newName;
+        }
+
+        $data = [
+            'user_name' => $this->request->getPost('user_name'),
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+            'company_name' => $this->request->getPost('company_name'),
+            'firstname' => $this->request->getPost('firstname'),
+            'lastname' => $this->request->getPost('lastname'),
+            'designation' => $this->request->getPost('designation'),
+            'skills' => $this->request->getPost('skills'),
+            'gender' => $this->request->getPost('gender'),
+            'dob' => $this->request->getPost('dob'),
+            'country' => $this->request->getPost('country'),
+            'city' => $this->request->getPost('city'),
+            'about_me' => $this->request->getPost('about_me'),
+            'profile_photo' => $profilePhotoName, // Save the new file name
+            'language' => $this->request->getPost('language'),
+            'age' => $this->request->getPost('age'),
+            'experience' => $this->request->getPost('experience'),
+            'location' => $this->request->getPost('location')
+        ];
+
+        $this->partnerModel->updateUser($userId, $data);
+
+        return redirect()->to('/edit_profile')->with('success', 'Profile updated successfully');
+    }
+
 
     /**
      * Renders content from cache if available, otherwise generates and caches it.

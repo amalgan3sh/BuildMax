@@ -18246,3 +18246,56 @@ label {
 -----------------------------------------------*/
 
 /*# sourceMappingURL=theme.css.map */
+
+.logo-slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.logo-slider {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scroll-behavior: smooth; /* Add smooth scrolling */
+}
+
+.logo-slider::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.logo-container {
+  display: inline-flex; /* Changed to inline-flex for better width calculation */
+  justify-content: space-between;
+}
+
+.logo-item {
+  flex: 0 0 auto;
+  margin-right: 15px; /* Adjust spacing between logos if needed */
+}
+
+.logo-item:last-child {
+  margin-right: 0; /* Remove margin on the last logo */
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.left-arrow {
+  left: 0;
+}
+
+.right-arrow {
+  right: 0;
+}

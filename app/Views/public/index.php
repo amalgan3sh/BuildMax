@@ -25,24 +25,109 @@
       <!-- ============================================-->
       <!-- <section> begin ============================-->
       <section class="py-7">
-
-        <div class="container">
-          <div class="row">
+    <div class="container">
+        <div class="row">
             <div class="col-12 mx-auto align-items-center text-center">
-              <p class="mb-4">Trusted by companies like</p>
+                <p class="mb-4">Trusted by companies like</p>
             </div>
-          </div>
-          <div class="row align-items-center justify-content-center justify-content-lg-around">
-            <div class="col-6 col-sm-4 col-md-4 col-lg-2 px-md-0 mb-5 mb-lg-0 text-center"><img src="<?php echo base_url('assets/');?>assets/img/gallery/company-1.png" alt="" /></div>
-            <div class="col-6 col-sm-4 col-md-4 col-lg-2 px-md-0 mb-5 mb-lg-0 text-center"><img src="<?php echo base_url('assets/');?>assets/img/gallery/company-2.png" alt="" /></div>
-            <div class="col-6 col-sm-4 col-md-4 col-lg-2 px-md-0 mb-5 mb-lg-0 text-center"><img src="<?php echo base_url('assets/');?>assets/img/gallery/company-3.png" alt="" /></div>
-            <div class="col-6 col-sm-4 col-md-4 col-lg-2 px-md-0 mb-5 mb-lg-0 text-center"><img src="<?php echo base_url('assets/');?>assets/img/gallery/company-4.png" alt="" /></div>
-            <div class="col-6 col-sm-4 col-md-4 col-lg-2 px-md-0 mb-5 mb-lg-0 text-center"><img src="<?php echo base_url('assets/');?>assets/img/gallery/company-1.png" alt="" /></div>
-          </div>
         </div>
-        <!-- end of .container-->
+        <div class="row align-items-center justify-content-center">
+            <div class="logo-slider-container">
+                <button class="slider-arrow left-arrow">&larr;</button>
+                <div class="logo-slider">
+                    <div class="logo-container">
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/fssai.png" alt="FSSAI" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/gmp.png" alt="GMP" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/iso.png" alt="ISO" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/feio.png" alt="FEIO" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/haccp.png" alt="HACCP" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/fssai.png" alt="FSSAI" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/gmp.png" alt="GMP" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/iso.png" alt="ISO" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/feio.png" alt="FEIO" /></div>
+                        <div class="logo-item"><img src="<?php echo base_url('assets/');?>assets/img/gallery/haccp.png" alt="HACCP" /></div>
+                    </div>
+                </div>
+                <button class="slider-arrow right-arrow">&rarr;</button>
+            </div>
+        </div>
+    </div>
+    <!-- end of .container-->
+</section>
+ <script>
 
-      </section>
+document.addEventListener('DOMContentLoaded', function() {
+    const logoSlider = document.querySelector('.logo-slider');
+    const logoContainer = document.querySelector('.logo-container');
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+    const scrollAmount = 200; // Adjust this value to control scroll distance
+    const autoScrollInterval = 3000; // 3 seconds
+    let autoScrollTimer;
+
+    // Function to smoothly scroll the logos
+    function smoothScroll(element, to, duration) {
+        const start = element.scrollLeft;
+        const change = to - start;
+        const increment = 20;
+        let currentTime = 0;
+
+        function animateScroll() {
+            currentTime += increment;
+            const val = Math.easeInOutQuad(currentTime, start, change, duration);
+            element.scrollLeft = val;
+            if (currentTime < duration) {
+                setTimeout(animateScroll, increment);
+            }
+        }
+
+        animateScroll();
+    }
+
+    // Easing function for smooth scrolling
+    Math.easeInOutQuad = function(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    };
+
+    // Auto-scroll function
+    function startAutoScroll() {
+        autoScrollTimer = setInterval(() => {
+            const newScrollLeft = logoSlider.scrollLeft + scrollAmount;
+            if (newScrollLeft >= logoContainer.scrollWidth - logoSlider.clientWidth) {
+                logoSlider.scrollLeft = 0;
+            } else {
+                smoothScroll(logoSlider, newScrollLeft, 1000);
+            }
+        }, autoScrollInterval);
+    }
+
+    // Stop auto-scrolling when user interacts
+    function stopAutoScroll() {
+        clearInterval(autoScrollTimer);
+    }
+
+    leftArrow.addEventListener('click', function() {
+        stopAutoScroll();
+        smoothScroll(logoSlider, logoSlider.scrollLeft - scrollAmount, 500);
+    });
+
+    rightArrow.addEventListener('click', function() {
+        stopAutoScroll();
+        smoothScroll(logoSlider, logoSlider.scrollLeft + scrollAmount, 500);
+    });
+
+    // Stop auto-scrolling when hovering over the slider
+    logoSlider.addEventListener('mouseenter', stopAutoScroll);
+    logoSlider.addEventListener('mouseleave', startAutoScroll);
+
+    // Start auto-scrolling
+    startAutoScroll();
+});
+ </script>
+
       <!-- <section> close ============================-->
       <!-- ============================================-->
 

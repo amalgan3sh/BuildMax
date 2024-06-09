@@ -82,7 +82,7 @@ class RegistrationModel extends Model {
     }
     
 
-    public function customerLogin($phone, $password): bool
+    public function customerLogin($phone, $password): bool|int
     {
         // Attempt to retrieve the user with the provided phone number or email
         $user = $this->getUserByPhoneOrEmail($phone);
@@ -90,8 +90,8 @@ class RegistrationModel extends Model {
         if ($user) {
             // Verify the password
             if (password_verify($password, $user->password)) {
-                // Password is correct, return true for successful login
-                return true;
+                // Password is correct, return the user_id for successful login
+                return $user->user_id;
             } else {
                 // Password is incorrect
                 return false;
@@ -101,26 +101,17 @@ class RegistrationModel extends Model {
         return false;
     }
 
-    private function getUserByPhoneOrEmail($identifier)
-    {
-        // Query the database to find the user by phone number or email address
-        // Here's an example assuming you're using CodeIgniter's Query Builder
-        $query = $this->db->table('users')
-                        ->where('phone', $identifier)
-                        ->orWhere('email', $identifier)
-                        ->get();
 
-        // Check if any rows were returned
-        if ($query->getNumRows() > 0) {
-            // Return the first row found
-            log_message('info', 'getUserByPhoneOrEmail: user exists');
-            return $query->getRow();
-        } else {
-            // No user found with the provided phone number or email
-            log_message('info', 'getUserByPhoneOrEmail: No user found with the provided phone number or email');
-            return null;
-        }
+    public function getUserByPhoneOrEmail($phoneOrEmail)
+    {
+        // Assuming your table is named 'users' and primary key is 'user_id'
+        return $this->db->table('users')
+                        ->where('phone', $phoneOrEmail)
+                        ->orWhere('email', $phoneOrEmail)
+                        ->get()
+                        ->getRow();
     }
+
 
     
     public function otpLogin($phone, $otp)
@@ -142,9 +133,12 @@ class RegistrationModel extends Model {
         return false;
     }
 
-    public function getUserDataById($user_id)
+    public function getUserDataById($userId)
     {
-        return $this->find($user_id);
+        return $this->db->table('users')
+                        ->where('user_id', $userId)
+                        ->get()
+                        ->getRowArray();
     }
 
 

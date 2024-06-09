@@ -13,7 +13,11 @@
                         </div> -->
                         <div class="profile-info">
                             <div class="profile-photo">
-                                <img src="<?php echo $userProfile['profile_photo']; ?>" class="img-fluid rounded-circle" alt="">
+                                <?php if (empty($userProfile['profile_photo'])): ?>
+                                    <img src="<?= esc(base_url('images/tab/1.jpg')) ?>" alt="Default Profile Photo" class="img-fluid rounded-circle">
+                                <?php else: ?>
+                                    <img src="<?= esc(base_url('public/uploads/profiles/' . $userProfile['profile_photo'])) ?>" class="img-fluid rounded-circle" alt="">
+                                <?php endif; ?>
                             </div>
                             <div class="profile-details">
                                 <div class="profile-name px-3 pt-2">
@@ -220,7 +224,7 @@
                                                             <h5 class="f-w-500">Name <span class="pull-end">:</span>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-sm-9 col-7"><span>Mitchell C.Shay</span>
+                                                        <div class="col-sm-9 col-7"><span><?php echo $userProfile['firstname'].' '.$userProfile['lastname']; ?></span>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-2">
@@ -228,7 +232,7 @@
                                                             <h5 class="f-w-500">Email <span class="pull-end">:</span>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-sm-9 col-7"><span>example@examplel.com</span>
+                                                        <div class="col-sm-9 col-7"><span><?php echo $userProfile['email']; ?></span>
                                                         </div>
                                                     </div>
                                                     <!-- <div class="row mb-2">
@@ -250,8 +254,7 @@
                                                         <div class="col-sm-3 col-5">
                                                             <h5 class="f-w-500">Location <span class="pull-end">:</span></h5>
                                                         </div>
-                                                        <div class="col-sm-9 col-7"><span>Rosemont Avenue Melbourne,
-                                                                Florida</span>
+                                                        <div class="col-sm-9 col-7"><span><?php echo $userProfile['location']; ?></span>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-2">
@@ -266,25 +269,25 @@
                                             <div id="profile-settings" class="tab-pane fade">
                                                 <div class="pt-3">
                                                     <div class="settings-form">
-                                                        <h4 class="text-primary">Account Setting</h4>
+                                                        <h4 class="text-primary">Bank Account Details</h4>
                                                         <form>
                                                             <div class="row">
                                                                 <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Email</label>
-                                                                    <input type="email" placeholder="Email" class="form-control">
+                                                                    <label class="form-label">Account Number</label>
+                                                                    <input type="text" placeholder="Account Number" class="form-control">
                                                                 </div>
                                                                 <div class="mb-3 col-md-6">
-                                                                    <label class="form-label">Password</label>
-                                                                    <input type="password" placeholder="Password" class="form-control">
+                                                                    <label class="form-label">IFSC</label>
+                                                                    <input type="text" placeholder="IFSC" class="form-control">
                                                                 </div>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Address</label>
-                                                                <input type="text" placeholder="1234 Main St" class="form-control">
+                                                                <label class="form-label">Name</label>
+                                                                <input type="text" placeholder="Account Holder Name" class="form-control">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Address 2</label>
-                                                                <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
+                                                                <label class="form-label">Branch</label>
+                                                                <input type="text" placeholder="Branch" class="form-control">
                                                             </div>
                                                             <div class="row">
                                                                 <div class="mb-3 col-md-6">

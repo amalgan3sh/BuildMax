@@ -163,7 +163,7 @@ class PartnerController extends BaseController
         return $this->renderCache($cacheKey, function() use ($viewName, $data) {
             // Always get user data for every view
             $userData = session()->get('user_data') ?? [];
-            $userData = is_array($userData) && !empty($userData) ? $userData[0] : [];
+            $userData = is_array($userData) && !empty($userData);
             
             // Merge $userData with additional data passed to the method
             $viewData = array_merge(['userData' => $userData], $data);

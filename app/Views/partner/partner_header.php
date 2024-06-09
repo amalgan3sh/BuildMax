@@ -42,6 +42,7 @@
 </head>
 <body>
 
+
     <!--*******************
         Preloader start
     ********************-->
@@ -928,11 +929,17 @@
 										<div class="header-info2 d-flex align-items-center">
 											<div class="d-flex align-items-center sidebar-info">
 												<div>
-													<h5 class="mb-0 text-white"><?php echo htmlspecialchars($_SESSION['user_data'][0]['company_name']) ?></h5>
-													<span class="d-block text-end"><?php echo htmlspecialchars($_SESSION['user_data'][0]['email']) ?></span>
+													<h5 class="mb-0 text-white"><?php echo htmlspecialchars($_SESSION['user_data']['company_name']) ?></h5>
+													<span class="d-block text-end"><?php echo htmlspecialchars($_SESSION['user_data']['email']) ?></span>
 												</div>
 											</div>
-											<img src="images/user.jpg" alt="">
+											
+											
+											<?php if (empty($userProfile['profile_photo'])): ?>
+												<img src="images/user.jpg" alt="">
+											<?php else: ?>
+												<img src="<?= esc(base_url('public/uploads/profiles/' . $userProfile['profile_photo'])) ?>" class="img-fluid rounded-circle" alt="">
+											<?php endif; ?>
 										</div>
 									</a>
 
@@ -992,7 +999,7 @@
 				<div class="sub-dz-head">
 					<div class="d-flex align-items-center dz-head-title">
 						<h2 class="text-white m-0">Dashboard</h2>
-						<p class="ms-2 text-warning">Welcome Back <?php echo htmlspecialchars($_SESSION['user_data'][0]['company_name']) ?></p>
+						<p class="ms-2 text-warning">Welcome Back <?php echo htmlspecialchars($_SESSION['user_data']['company_name']) ?></p>
 					</div>
 					
 				</div>	

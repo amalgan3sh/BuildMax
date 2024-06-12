@@ -13,7 +13,7 @@
                         <form id="login-form" action="<?php echo base_url('login_process'); ?>" method="POST">
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone Number or Email</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <input type="text" class="form-control" id="phone" name="phone" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>

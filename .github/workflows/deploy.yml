@@ -18,6 +18,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y php-cli php-mbstring php-xml
 
+    - name: Get server host key
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.CPANEL_HOST }} >> ~/.ssh/known_hosts
+
     - name: Deploy to cPanel
       env:
         HOST: ${{ secrets.CPANEL_HOST }}
@@ -27,4 +32,4 @@ jobs:
         mkdir -p ~/.ssh
         echo "$KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        rsync -avzc --delete --exclude='.git' ./ $USER@$HOST:/path/to/public_html
+        rsync -avzc --delete --exclude='.git' -e 'ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa' ./ $USER@$HOST:/path/to/public_html

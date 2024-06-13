@@ -377,8 +377,8 @@
 									<div class="card crypto-chart">
 										<div class="card-header pb-0 border-0 flex-wrap">
 											<div class="mb-0">
-												<h4 class="card-title">Crypto Statistics</h4>
-												<p>Lorem ipsum dolor sit amet, consectetur</p>
+												<h4 class="card-title">Healthcare Statistics</h4>
+												<p>Explore healthcare trends and data across various sectors.</p>
 											</div>
 											<div class="d-flex mb-2">
 												<div class="form-check form-switch toggle-switch me-3">
@@ -394,25 +394,40 @@
 										<div class="card-body pt-2">
 											<ul class="nav nav-pills">
 												<li class=" nav-item">
-													<a href="#navpills-1" class="nav-link active" data-bs-toggle="tab" aria-expanded="false">Ripple</a>
+													<a href="#navpills-1" class="nav-link active" data-bs-toggle="tab" aria-expanded="false">Pharmaceuticals</a>
 												</li>
 												<li class="nav-item">
-													<a href="#navpills-2" class="nav-link " data-bs-toggle="tab" aria-expanded="false">Bitcoin</a>
+													<a href="#navpills-2" class="nav-link " data-bs-toggle="tab" aria-expanded="false">Neutraceuticals</a>
 												</li>
 												<li class="nav-item">
-													<a href="#navpills-3" class="nav-link" data-bs-toggle="tab" aria-expanded="true">Ethereum</a>
+													<a href="#navpills-3" class="nav-link" data-bs-toggle="tab" aria-expanded="true">Cosmetics</a>
 												</li>
 												<li class="nav-item">
-													<a href="#navpills-5" class="nav-link" data-bs-toggle="tab" aria-expanded="true">Zcash</a>
+													<a href="#navpills-5" class="nav-link" data-bs-toggle="tab" aria-expanded="true">Hospital Care</a>
 													</li>
 												<li class="nav-item">
-													<a href="#navpills-5" class="nav-link" data-bs-toggle="tab" aria-expanded="true">LiteCoin</a>
+													<a href="#navpills-5" class="nav-link" data-bs-toggle="tab" aria-expanded="true">Cosmaceuticals</a>
 												</li>
 											</ul>
-											<div id="marketChart"></div>
+											<div id="marketCharts">
+
+											<script type="text/javascript">
+												trends.embed.renderExploreWidget("TIMESERIES", {
+													"comparisonItem": [{"keyword":"Pharmaceutical","geo":"","time":"today 5-y"}],
+													"category": 0,
+													"property": ""
+												}, {
+													"exploreQuery": "date=today%205-y&q=Pharmaceutical&hl=en",
+													"guestPath": "https://trends.google.com:443/trends/embed/"
+												});
+											</script>
+
+											</div>
+											
 										</div>
 									</div>
 								</div>
+								
 								<div class="col-xl-6">
 									<div class="card market-chart">
 										<div class="card-header border-0 pb-0 flex-wrap">
@@ -445,7 +460,25 @@
 												  </li>
 												</ul>
 											</div>	
-											<div id="marketChart2" class="market-line"></div> 
+											<div id="marketCharts" class="market-line">
+											<script type="text/javascript">
+												trends.embed.renderExploreWidget("TIMESERIES", {
+													"comparisonItem": [
+														{"keyword":"Pharmaceutical","geo":"","time":"today 5-y"},
+														{"keyword":"cosmetics","geo":"","time":"today 5-y"},
+														{"keyword":"healthcare","geo":"","time":"today 5-y"},
+														{"keyword":"cosmaceuticals","geo":"","time":"today 5-y"},
+														{"keyword":"surgicals","geo":"","time":"today 5-y"}
+													],
+													"category": 0,
+													"property": ""
+												}, {
+													"exploreQuery": "date=today%205-y&q=Pharmaceutical,cosmetics,healthcare,cosmaceuticals,surgicals&hl=en",
+													"guestPath": "https://trends.google.com:443/trends/embed/"
+												});
+											</script>
+
+											</div> 
 										</div>
 									</div>
 								</div>

@@ -38,6 +38,8 @@
 	
 	<!-- Style css -->
 	<link class="main-css" href="css/style.css" rel="stylesheet">
+	<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3728_RC01/embed_loader.js"></script>
+
 	
 </head>
 <body>

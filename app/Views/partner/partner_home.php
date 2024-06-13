@@ -235,28 +235,27 @@
 							<div class="row  main-card">
 								<div class="swiper mySwiper-counter position-relative overflow-hidden">
 									<div class="swiper-wrapper">
-										<div class="swiper-slide">
-											<div class="card card-box bg-secondary">
-												<div class="card-header border-0 pb-0">
-													<div  class="chart-num">
-														<p>
-															<i class="fa-solid fa-sort-down me-2"></i>
-															4%(30 days)
-														</p>
-														<h2 class="font-w600 mb-0">Pharmaceuticals</h2>
-													</div>
-													<div class="dlab-swiper-circle">
-														<svg width="50" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<path d="M21.071 2.929a5.986 5.986 0 0 0-8.486 0l-2.828 2.828-1.415-1.414a3 3 0 0 0-4.242 4.242l2.121 2.121-5.656 5.657a4 4 0 0 0 5.656 5.656l5.657-5.656 2.121 2.121a3 3 0 1 0 4.243-4.242l-1.414-1.414 2.828-2.828a5.986 5.986 0 0 0 0-8.486zm-4.95 14.142-2.829-2.829 2.829-2.828 2.828 2.828-2.828 2.829zm-2.828-8.485 2.829 2.828-2.829 2.829-2.828-2.829 2.828-2.828zm-8.486 8.485 5.657-5.656 2.828 2.828-5.657 5.656a2 2 0 1 1-2.828-2.828zm2.121-7.07-2.121-2.122a1 1 0 0 1 1.414-1.414l2.121 2.121-1.415 1.415z" fill="#FFF"/>
-														</svg>
-													</div>
-													
-												</div>
-												<div class="card-body p-0">
-													<div id="widgetChart1" class="chart-primary"></div>
-												</div>
-											</div>
-										</div>
+									<div class="swiper-slide">
+    <div class="card card-box bg-info">
+        <div class="card-header border-0 pb-0">
+            <div class="chart-num">
+                <p>
+                    <i class="fa-solid fa-heart-pulse me-2"></i>
+                    +12% (30 days)
+                </p>
+                <h2 class="font-w600 mb-0">Healthcare Services</h2>
+            </div>
+            <div class="dlab-swiper-circle">
+                <svg width="50" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21c-3.038 0-5.631-1.862-6.687-4.5a9.01 9.01 0 0 1 9.374 0C13.631 19.138 15.038 21 18 21zm-9-6a9 9 0 0 0 18 0c0-4.97-4.03-9-9-9s-9 4.03-9 9zm4.5-9a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z" fill="#FFF" />
+                </svg>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div id="widgetChart1" class="chart-primary"></div>
+        </div>
+    </div>
+</div>
 										<div class="swiper-slide">
 											<div class="card card-box bg-dark">
 												<div class="card-header border-0 pb-0">
@@ -433,7 +432,7 @@
 										<div class="card-header border-0 pb-0 flex-wrap">
 											<div class="mb-0">
 												<h4 class="card-title">Market Overview</h4>
-												<p>Lorem ipsum dolor sit amet, consectetur</p>
+												<p>Trends in pharmaceuticals, cosmetics, healthcare, and more.</p>
 											</div>
 											<a href="javascript:void(0);" class="btn-link text-primary get-report mb-2">
 											<svg class="me-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

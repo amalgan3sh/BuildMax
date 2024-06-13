@@ -23,7 +23,7 @@ jobs:
         run: mkdir deploy_temp
 
       - name: Copy files to temporary directory
-        run: cp -r . deploy_temp/
+        run: rsync -avz --exclude='.git' --exclude='deploy_temp' ./ deploy_temp/
 
       - name: Create archive
         run: |

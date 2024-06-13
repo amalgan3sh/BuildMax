@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - main  # Deploy on push to main branch
+      - main
 
 jobs:
   deploy:
@@ -16,29 +16,32 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'  # Adjust PHP version as needed
-          extensions: mbstring, intl  # Install necessary PHP extensions
+          php-version: '8.0'
+          extensions: mbstring, intl
+
+      - name: Create temporary directory
+        run: mkdir deploy_temp
+
+      - name: Copy files to temporary directory
+        run: cp -r . deploy_temp/
+
+      - name: Create archive
+        run: |
+          tar -czf archive.tgz -C deploy_temp .
 
       - name: Deploy to cPanel
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_DOMAIN: ${{ secrets.CPANEL_DOMAIN }}
-          CPANEL_PUBLIC_HTML: ${{ secrets.CPANEL_PUBLIC_HTML }}
+          CPANEL_DOMAIN: buildmax.lammy.life
+          CPANEL_PUBLIC_HTML: public_html
         run: |
-          # Define variables
-          LOCAL_DIR=$(pwd)
-          REMOTE_DIR=/home/${CPANEL_USER}/${CPANEL_PUBLIC_HTML}
-
-          # Create archive of the local directory
-          tar -czf archive.tgz -C ${LOCAL_DIR} .
-
           # Upload the archive to the cPanel server
           curl -u ${CPANEL_USER}:${CPANEL_PASSWORD} ftp://${CPANEL_DOMAIN}/public_html/archive.tgz -T archive.tgz
 
           # Connect to cPanel via SSH and extract the archive
           ssh ${CPANEL_USER}@${CPANEL_DOMAIN} << 'ENDSSH'
-            cd ${REMOTE_DIR}
+            cd /home/${CPANEL_USER}/${CPANEL_PUBLIC_HTML}
             tar -xzf archive.tgz
             rm archive.tgz
           ENDSSH

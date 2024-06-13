@@ -3,33 +3,42 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - main
+      - main  # Deploy on push to main branch
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y php-cli php-mbstring php-xml
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'  # Adjust PHP version as needed
+          extensions: mbstring, intl  # Install necessary PHP extensions
 
-    - name: Get server host key
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.CPANEL_HOST }} >> ~/.ssh/known_hosts
+      - name: Deploy to cPanel
+        env:
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_DOMAIN: ${{ secrets.CPANEL_DOMAIN }}
+          CPANEL_PUBLIC_HTML: ${{ secrets.CPANEL_PUBLIC_HTML }}
+        run: |
+          # Define variables
+          LOCAL_DIR=$(pwd)
+          REMOTE_DIR=/home/${CPANEL_USER}/${CPANEL_PUBLIC_HTML}
 
-    - name: Deploy to cPanel
-      env:
-        HOST: ${{ secrets.CPANEL_HOST }}
-        USER: ${{ secrets.CPANEL_USER }}
-        KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        rsync -avzc --delete --exclude='.git' -e 'ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa' ./ $USER@$HOST:/path/to/public_html
+          # Create archive of the local directory
+          tar -czf archive.tgz -C ${LOCAL_DIR} .
+
+          # Upload the archive to the cPanel server
+          curl -u ${CPANEL_USER}:${CPANEL_PASSWORD} ftp://${CPANEL_DOMAIN}/public_html/archive.tgz -T archive.tgz
+
+          # Connect to cPanel via SSH and extract the archive
+          ssh ${CPANEL_USER}@${CPANEL_DOMAIN} << 'ENDSSH'
+            cd ${REMOTE_DIR}
+            tar -xzf archive.tgz
+            rm archive.tgz
+          ENDSSH
